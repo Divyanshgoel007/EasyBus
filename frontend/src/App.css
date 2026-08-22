@@ -1,0 +1,66 @@
+:root {
+  --navy: #17324d;
+  --blue: #1769aa;
+  --blue-light: #e8f3fa;
+  --green: #42a86b;
+  --green-light: #e7f5eb;
+  --line: #dce8ee;
+  --muted: #6c8190;
+  --white: #ffffff;
+}
+
+.app-shell { min-height: 100vh; color: var(--navy); }
+.navbar { max-width: 1180px; margin: 0 auto; padding: 22px 32px; display: flex; justify-content: space-between; align-items: center; }
+.brand, .nav-link { border: 0; background: transparent; cursor: pointer; color: inherit; }
+.brand { display: flex; gap: 10px; align-items: center; font-weight: 800; font-size: 1.25rem; }
+.brand-mark, .detail-bus-mark { display: grid; place-items: center; color: white; background: var(--blue); font-weight: 800; }
+.brand-mark { width: 38px; height: 38px; border-radius: 10px; font-size: .85rem; }
+.nav-links { display: flex; gap: 30px; }
+.nav-link { color: var(--muted); font-weight: 600; padding: 8px 0; border-bottom: 2px solid transparent; }
+.nav-link:hover, .nav-link.active { color: var(--blue); border-bottom-color: var(--green); }
+.hero-section { max-width: 1180px; margin: 30px auto 0; padding: 72px 8%; display: grid; grid-template-columns: 1.1fr .9fr; align-items: center; gap: 70px; background: var(--blue-light); border-radius: 18px; }
+.hero-copy { max-width: 580px; }
+.eyebrow { margin: 0 0 12px; color: var(--green); text-transform: uppercase; letter-spacing: .11em; font-size: .72rem; font-weight: 800; }
+h1, h2, h3, p { margin-top: 0; }
+h1 { margin-bottom: 22px; font-size: clamp(2.5rem, 5vw, 4.3rem); line-height: 1.05; letter-spacing: -.04em; }
+h1 span { color: var(--blue); }
+h2 { margin-bottom: 8px; font-size: 2rem; }
+h3 { margin: 17px 0 7px; font-size: 1.05rem; }
+.hero-description, .page-heading > p:last-child { color: var(--muted); line-height: 1.7; }
+.hero-description { max-width: 480px; margin-bottom: 30px; font-size: 1.05rem; }
+.button { border: 0; border-radius: 7px; padding: 13px 20px; cursor: pointer; font-weight: 700; }
+.button-primary { color: white; background: var(--blue); box-shadow: 0 7px 15px rgba(23, 105, 170, .2); }
+.button-secondary { color: var(--blue); background: var(--blue-light); }
+.button:hover { transform: translateY(-1px); }
+.hero-visual { min-height: 290px; position: relative; display: grid; place-items: center; background: white; border-radius: 50%; }
+.route-line { position: absolute; width: 62%; height: 5px; background: var(--green); transform: rotate(-25deg); }
+.route-stop { width: 17px; height: 17px; position: absolute; top: -6px; background: white; border: 5px solid var(--green); border-radius: 50%; }
+.route-stop.start { left: -6px; }.route-stop.end { right: -6px; }
+.bus-illustration { z-index: 1; width: 132px; height: 84px; display: grid; place-items: center; color: white; background: var(--blue); border: 8px solid white; border-radius: 20px 20px 12px 12px; box-shadow: 0 10px 25px rgba(23, 50, 77, .2); }
+.bus-illustration span { padding: 7px; border: 2px solid white; border-radius: 5px; font-weight: 800; }
+.visual-label { position: absolute; right: 10%; bottom: 15%; color: var(--green); font-size: .8rem; font-weight: 800; }
+.content-section, .page-shell { max-width: 1180px; margin: 0 auto; padding: 70px 32px; }
+.section-heading { display: flex; justify-content: space-between; align-items: end; margin-bottom: 25px; }
+.text-button { border: 0; padding: 0; color: var(--blue); background: transparent; cursor: pointer; font-weight: 700; }
+.route-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.route-card, .bus-card, .placeholder-panel, .details-panel { background: var(--white); border: 1px solid var(--line); border-radius: 10px; }
+.route-card { padding: 22px; min-height: 190px; }
+.route-card p, .bus-card p, .details-panel p { color: var(--muted); font-size: .9rem; }
+.card-topline { display: flex; justify-content: space-between; align-items: center; }
+.route-number { color: var(--blue); font-weight: 800; font-size: 1.25rem; }
+.status-dot { color: var(--green); background: var(--green-light); border-radius: 20px; padding: 4px 9px; font-size: .68rem; font-weight: 800; }
+.page-heading { max-width: 700px; margin: 20px 0 40px; }.page-heading h1 { font-size: clamp(2.4rem, 5vw, 4rem); }
+.placeholder-panel { padding: 60px 24px; text-align: center; }.placeholder-panel p { max-width: 430px; margin: 0 auto 25px; color: var(--muted); }
+.placeholder-icon { display: grid; place-items: center; width: 62px; height: 62px; margin: 0 auto 20px; color: var(--blue); background: var(--blue-light); border-radius: 50%; font-weight: 800; font-size: .75rem; }
+.bus-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 20px; }.bus-card { display: flex; gap: 16px; padding: 20px; align-items: center; }
+.bus-card h3 { margin: 3px 0; }.bus-card p { margin-bottom: 0; }.bus-icon { display: grid; place-items: center; width: 54px; height: 54px; color: white; background: var(--green); border-radius: 9px; font-size: .7rem; font-weight: 800; }
+.details-panel { max-width: 620px; padding: 30px; display: grid; grid-template-columns: auto 1fr; gap: 20px; align-items: center; }.detail-bus-mark { width: 64px; height: 64px; border-radius: 12px; }.details-panel h2 { margin-bottom: 4px; }.details-panel .eyebrow { margin-bottom: 4px; }
+.detail-row { grid-column: 1 / -1; display: flex; justify-content: space-between; padding-top: 16px; border-top: 1px solid var(--line); font-size: .9rem; }.detail-row span { color: var(--muted); }.status-text { color: var(--green); }
+.details-panel .button { grid-column: 1 / -1; justify-self: start; }.footer { padding: 25px 32px; color: var(--navy); border-top: 1px solid var(--line); text-align: center; font-weight: 800; }.footer span { color: var(--muted); font-weight: 400; margin-left: 8px; }
+
+@media (max-width: 800px) {
+  .navbar { padding: 18px 20px; align-items: flex-start; }.nav-links { gap: 14px; flex-wrap: wrap; justify-content: end; }.nav-link { font-size: .85rem; }
+  .hero-section { margin: 10px 16px 0; padding: 45px 28px; grid-template-columns: 1fr; gap: 35px; }.hero-visual { min-height: 230px; }
+  .content-section, .page-shell { padding: 50px 20px; }.route-grid { grid-template-columns: repeat(2, 1fr); }.route-grid-wide { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) { .navbar { display: block; }.brand { margin-bottom: 15px; }.nav-links { justify-content: space-between; }.section-heading { display: block; }.section-heading .text-button { display: block; margin-top: 15px; }.route-grid, .bus-list, .route-grid-wide { grid-template-columns: 1fr; }.details-panel { padding: 22px; }.detail-row { align-items: flex-start; gap: 15px; }.footer span { display: block; margin: 4px 0 0; } }
