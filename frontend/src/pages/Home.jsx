@@ -2,10 +2,10 @@ import Button from '../components/Button'
 import RouteCard from '../components/RouteCard'
 
 const popularRoutes = [
-  { number: '131', name: 'Dhanmondi to Motijheel', frequency: 'Every 12 minutes', status: 'Active' },
-  { number: '109', name: 'Mirpur to Gulistan', frequency: 'Every 15 minutes', status: 'Active' },
-  { number: '109A', name: 'Uttara to Farmgate', frequency: 'Every 20 minutes', status: 'Active' },
-  { number: '175', name: 'Mohammadpur to Sadarghat', frequency: 'Every 18 minutes', status: 'Active' },
+  { number: '131', name: 'Delhi to Rohini', frequency: 'Every 12 minutes', status: 'Active' },
+  { number: '109', name: 'Kashmere Gate to Panipat', frequency: 'Every 15 minutes', status: 'Active' },
+  { number: '109A', name: 'Delhi to Murthal', frequency: 'Every 20 minutes', status: 'Active' },
+  { number: '175', name: 'Delhi to Sonipat', frequency: 'Every 18 minutes', status: 'Active' },
 ]
 
 function Home({ onNavigate }) {
@@ -36,7 +36,7 @@ function Home({ onNavigate }) {
           <button className="text-button" type="button" onClick={() => onNavigate('routes')}>See all routes <span aria-hidden="true">-&gt;</span></button>
         </div>
         <div className="route-grid">
-          {popularRoutes.map((route) => <RouteCard key={route.number} route={route} onSelect={() => onNavigate('routes')} />)}
+          {popularRoutes.map((route) => <RouteCard key={route.number} route={route} onSelect={() => onNavigate('tracking', route)} />)}
         </div>
       </section>
     </main>

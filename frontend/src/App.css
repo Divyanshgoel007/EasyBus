@@ -46,10 +46,18 @@ h3 { margin: 17px 0 7px; font-size: 1.05rem; }
 .route-card, .bus-card, .placeholder-panel, .details-panel { background: var(--white); border: 1px solid var(--line); border-radius: 10px; }
 .route-card { padding: 22px; min-height: 190px; }
 .route-card p, .bus-card p, .details-panel p { color: var(--muted); font-size: .9rem; }
+.route-stops { margin: 16px 0; color: var(--muted); font-size: .8rem; line-height: 1.7; }.route-stops strong { display: block; color: var(--navy); font-size: .78rem; margin-bottom: 2px; }
 .card-topline { display: flex; justify-content: space-between; align-items: center; }
 .route-number { color: var(--blue); font-weight: 800; font-size: 1.25rem; }
 .status-dot { color: var(--green); background: var(--green-light); border-radius: 20px; padding: 4px 9px; font-size: .68rem; font-weight: 800; }
 .page-heading { max-width: 700px; margin: 20px 0 40px; }.page-heading h1 { font-size: clamp(2.4rem, 5vw, 4rem); }
+.tracking-layout { display: grid; grid-template-columns: minmax(260px, .8fr) minmax(0, 1.5fr); gap: 22px; align-items: stretch; }
+.tracking-sidebar { display: flex; flex-direction: column; gap: 20px; padding: 26px; background: var(--white); border: 1px solid var(--line); border-radius: 10px; }
+.tracking-intro .placeholder-icon { margin: 0 0 18px; }.tracking-intro h2 { margin-bottom: 8px; }.tracking-intro p { color: var(--muted); font-size: .9rem; }
+.tracking-sidebar .bus-list { grid-template-columns: 1fr; margin-top: 0; }.tracking-sidebar .button { align-self: flex-start; }
+.bus-details-card { padding: 20px; background: var(--blue-light); border: 1px solid var(--line); border-radius: 10px; }.details-card-heading { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }.details-card-heading h2 { margin: 0; font-size: 1.25rem; }.close-button { border: 0; color: var(--blue); background: transparent; cursor: pointer; font-weight: 700; }.bus-detail-row { display: flex; justify-content: space-between; gap: 16px; padding: 8px 0; border-top: 1px solid rgba(220, 232, 238, .9); font-size: .86rem; }.bus-detail-row span { color: var(--muted); }
+.crowd-reporting { margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(220, 232, 238, .9); font-size: .86rem; }.crowd-options { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }.crowd-button { display: inline-flex; align-items: center; gap: 6px; padding: 8px 10px; color: var(--navy); background: white; border: 1px solid var(--line); border-radius: 6px; cursor: pointer; font-size: .78rem; }.crowd-button.selected { border-color: var(--blue); box-shadow: 0 0 0 2px rgba(23, 105, 170, .12); }.crowd-indicator { width: 9px; height: 9px; border-radius: 50%; }.crowd-light .crowd-indicator { background: #42a86b; }.crowd-moderate .crowd-indicator { background: #d6a62c; }.crowd-crowded .crowd-indicator { background: #d65c52; }
+.map-wrapper { min-height: 470px; overflow: hidden; border: 1px solid var(--line); border-radius: 10px; }.map-container { height: 100%; min-height: 470px; width: 100%; }
 .placeholder-panel { padding: 60px 24px; text-align: center; }.placeholder-panel p { max-width: 430px; margin: 0 auto 25px; color: var(--muted); }
 .placeholder-icon { display: grid; place-items: center; width: 62px; height: 62px; margin: 0 auto 20px; color: var(--blue); background: var(--blue-light); border-radius: 50%; font-weight: 800; font-size: .75rem; }
 .bus-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 20px; }.bus-card { display: flex; gap: 16px; padding: 20px; align-items: center; }
@@ -61,6 +69,6 @@ h3 { margin: 17px 0 7px; font-size: 1.05rem; }
 @media (max-width: 800px) {
   .navbar { padding: 18px 20px; align-items: flex-start; }.nav-links { gap: 14px; flex-wrap: wrap; justify-content: end; }.nav-link { font-size: .85rem; }
   .hero-section { margin: 10px 16px 0; padding: 45px 28px; grid-template-columns: 1fr; gap: 35px; }.hero-visual { min-height: 230px; }
-  .content-section, .page-shell { padding: 50px 20px; }.route-grid { grid-template-columns: repeat(2, 1fr); }.route-grid-wide { grid-template-columns: repeat(2, 1fr); }
+  .content-section, .page-shell { padding: 50px 20px; }.route-grid { grid-template-columns: repeat(2, 1fr); }.route-grid-wide { grid-template-columns: repeat(2, 1fr); }.tracking-layout { grid-template-columns: 1fr; }
 }
 @media (max-width: 480px) { .navbar { display: block; }.brand { margin-bottom: 15px; }.nav-links { justify-content: space-between; }.section-heading { display: block; }.section-heading .text-button { display: block; margin-top: 15px; }.route-grid, .bus-list, .route-grid-wide { grid-template-columns: 1fr; }.details-panel { padding: 22px; }.detail-row { align-items: flex-start; gap: 15px; }.footer span { display: block; margin: 4px 0 0; } }
