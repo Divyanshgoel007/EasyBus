@@ -1,16 +1,93 @@
-# React + Vite
+# EasyBus
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+EasyBus is a beginner-friendly Indian bus tracking frontend built with React and Vite. It currently uses static dummy data to demonstrate routes, Delhi/NCR bus locations, bus details, and crowd reporting.
 
-Currently, two official plugins are available:
+## Current Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Responsive EasyBus navigation
+- Home page with popular routes
+- Routes page with route details and stops
+- Route-specific Live Tracking
+- OpenStreetMap map using React-Leaflet
+- Static Delhi/NCR bus and stop markers
+- Clickable bus markers with bus details
+- Dummy ETA, crowd level, and status information
+- Frontend-only crowd reporting with Light, Moderate, and Crowded options
 
-## React Compiler
+All bus, route, stop, ETA, and crowd values are dummy frontend data. They are not connected to a backend or real GPS service.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Technologies
 
-## Expanding the ESLint configuration
+- React
+- JavaScript
+- Vite
+- Leaflet
+- React-Leaflet
+- OpenStreetMap
+- CSS
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Project Structure
+
+```text
+src/
+├── components/
+│   ├── BusCard.jsx
+│   ├── Button.jsx
+│   ├── Map.jsx
+│   ├── Navbar.jsx
+│   └── RouteCard.jsx
+├── pages/
+│   ├── BusDetails.jsx
+│   ├── Home.jsx
+│   ├── LiveTracking.jsx
+│   └── Routes.jsx
+├── App.css
+├── App.jsx
+├── index.css
+└── main.jsx
+```
+
+## How Navigation Works
+
+The application uses a simple `currentPage` state in `App.jsx` instead of a routing library. The selected route is passed through the existing navigation function when a user clicks `View route`.
+
+On the Live Tracking page, the selected route is used to filter the dummy bus array. Opening Live Tracking directly shows all available buses.
+
+## How the Map Works
+
+`Map.jsx` uses React-Leaflet components:
+
+- `MapContainer` creates the map centered on Delhi/NCR.
+- `TileLayer` loads map tiles from OpenStreetMap.
+- `Marker` displays buses and bus stops.
+- `Popup` shows information when a marker is clicked.
+- `Polyline` draws the sample route line.
+
+## Getting Started
+
+From the `frontend` directory, install dependencies:
+
+```bash
+npm install
+```
+
+Start the development server:
+
+```bash
+npm run dev
+```
+
+Then open the local URL shown in the terminal.
+
+## Available Scripts
+
+```bash
+npm run dev      # Start the development server
+npm run build    # Create a production build
+npm run lint     # Check the code with ESLint
+npm run preview  # Preview the production build
+```
+
+## Future Features
+
+The current project does not include backend integration, authentication, real-time GPS tracking, Socket.IO, WebSockets, or database storage. These can be added in later development steps.
