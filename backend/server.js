@@ -73,7 +73,7 @@ app.post('/api/login', async (req, res) => {
     if (!user) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
-    const token = jwt.sign({ userId: user._id, role: user.role }, process.env.JWT_SECRET || 'secret_key', { expiresIn: '1d' });
+    const token = jwt.sign({ userId: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1d' });
     res.json({ message: 'Login successful', token, user });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -86,7 +86,7 @@ app.post('/api/register', async (req, res) => {
     const { name, email, password, role } = req.body;
     const user = new User({ name, email, password, role });
     await user.save();
-    const token = jwt.sign({ userId: user._id, role: user.role }, process.env.JWT_SECRET || 'secret_key', { expiresIn: '1d' });
+    const token = jwt.sign({ userId: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1d' });
     res.json({ message: 'User created successfully', token, user });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -99,7 +99,7 @@ const authenticateToken = (req, res, next) => {
   const token = authHeader && authHeader.split(' ')[1];
   if (token == null) return res.sendStatus(401);
 
-  jwt.verify(token, process.env.JWT_SECRET || 'secret_key', (err, user) => {
+  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
     if (err) return res.sendStatus(403);
     req.user = user;
     next();
