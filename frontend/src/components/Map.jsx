@@ -1,52 +1,55 @@
-import { MapContainer, Marker, Polyline, Popup, TileLayer } from 'react-leaflet'
+import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
+import L from 'leaflet'
 
-const routeStops = [
-  { name: 'Dhanmondi 27', position: [28.6139, 77.209] },
-  { name: 'Farmgate', position: [28.6328, 77.2197] },
-  { name: 'Shahbag', position: [28.6251, 77.2065] },
-  { name: 'Motijheel', position: [28.5892, 77.214] },
-]
+// Fix default marker icon issues in Leaflet with React
+delete L.Icon.Default.prototype._getIconUrl
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png',
+  iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
+  shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png',
+})
 
-const buses = [
-  { id: 'EB-204', route: '131', position: [28.621, 77.214], currentStop: 'Kashmere Gate', nextStop: 'Shalimar Bagh', eta: '8 min', crowd: 'Moderate', status: 'Active' },
-  { id: 'EB-205', route: '131', position: [28.628, 77.222], currentStop: 'Shalimar Bagh', nextStop: 'Pitampura', eta: '12 min', crowd: 'Light', status: 'Active' },
-  { id: 'EB-118', route: '109', position: [28.603, 77.218], currentStop: 'Kashmere Gate', nextStop: 'Sonipat', eta: '10 min', crowd: 'Crowded', status: 'Active' },
-  { id: 'EB-301', route: '109A', position: [28.635, 77.21], currentStop: 'Delhi', nextStop: 'Narela', eta: '9 min', crowd: 'Moderate', status: 'Active' },
-]
+// Delhi Center default coordinates
+const DELHI_CENTER = [28.6139, 77.2090]
 
-function Map({ selectedRoute, onBusSelect }) {
-  const routePositions = routeStops.map((stop) => stop.position)
-  const visibleBuses = selectedRoute
-    ? buses.filter((bus) => bus.route === selectedRoute)
-    : buses
+function Map({ buses = [], onBusSelect }) {
+  // If buses are present, use the first bus position or default center
+  const initialCenter = buses.length > 0 && buses[0].latitude && buses[0].longitude
+    ? [buses[0].latitude, buses[0].longitude]
+    : DELHI_CENTER
 
   return (
     <div className="map-wrapper">
-      <MapContainer center={[28.6139, 77.209]} zoom={12} scrollWheelZoom={false} className="map-container">
+      <MapContainer center={initialCenter} zoom={12} scrollWheelZoom={true} className="map-container">
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <Polyline positions={routePositions} pathOptions={{ color: '#1769aa', weight: 5 }} />
-        {routeStops.map((stop) => (
-          <Marker key={stop.name} position={stop.position}>
-            <Popup>{stop.name} stop</Popup>
-          </Marker>
-        ))}
-        {visibleBuses.map((bus) => (
-          <Marker
-            key={bus.id}
-            position={bus.position}
-            eventHandlers={{ click: () => onBusSelect(bus) }}
-          >
-            <Popup>
-              <strong>{bus.id}</strong>
-              <br />
-              Route {bus.route}
-            </Popup>
-          </Marker>
-        ))}
+        {buses.map((bus) => {
+          if (!bus.latitude || !bus.longitude) return null
+          return (
+            <Marker
+              key={bus.id || bus.vehicleId}
+              position={[bus.latitude, bus.longitude]}
+              eventHandlers={{ click: () => onBusSelect && onBusSelect(bus) }}
+            >
+              <Popup>
+                <div style={{ padding: '4px' }}>
+                  <strong style={{ fontSize: '15px', color: '#1769aa' }}>
+                    Bus {bus.licensePlate || bus.vehicleId}
+                  </strong>
+                  <br />
+                  <strong>Route:</strong> {bus.routeId ? `Route ${bus.routeId}` : 'Delhi Local'}
+                  <br />
+                  <strong>Speed:</strong> {bus.speed ? `${Math.round(bus.speed)} km/h` : 'Stopped / 0 km/h'}
+                  <br />
+                  <strong>Coordinates:</strong> {bus.latitude.toFixed(4)}, {bus.longitude.toFixed(4)}
+                </div>
+              </Popup>
+            </Marker>
+          )
+        })}
       </MapContainer>
     </div>
   )

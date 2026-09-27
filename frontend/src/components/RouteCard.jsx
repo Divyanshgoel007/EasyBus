@@ -1,22 +1,18 @@
 function RouteCard({ route, onSelect }) {
+  const routeNumber = route.route_short_name || route.route_id || route.number || 'Route'
+  const routeName = route.route_long_name || route.name || `Route ${routeNumber}`
+  const agency = route.agency_id || 'DIMTS / DTC'
+
   return (
     <article className="route-card">
       <div className="card-topline">
-        <span className="route-number">{route.number}</span>
-        <span className="status-dot">{route.status}</span>
+        <span className="route-number">Route {routeNumber}</span>
+        <span className="status-dot">Active</span>
       </div>
-      <h3>{route.from ? `${route.from} -> ${route.to}` : route.name}</h3>
-      <p>{route.frequency}</p>
-      {route.stops && (
-        <div className="route-stops">
-          <strong>Stops</strong>
-          {route.stops.map((stop, index) => (
-            <div key={stop}>{index + 1}. {stop}</div>
-          ))}
-        </div>
-      )}
-      <button className="text-button" type="button" onClick={() => onSelect(route)}>
-        View route <span aria-hidden="true">-&gt;</span>
+      <h3>{routeName}</h3>
+      <p>Agency: {agency}</p>
+      <button className="text-button" type="button" onClick={() => onSelect && onSelect(route)}>
+        Track live buses on this route <span aria-hidden="true">-&gt;</span>
       </button>
     </article>
   )

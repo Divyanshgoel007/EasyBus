@@ -1,23 +1,27 @@
 import Button from '../components/Button'
 
-function BusDetails({ onNavigate }) {
+function BusDetails({ selectedRoute, onNavigate }) {
+  const routeNumber = selectedRoute?.number || selectedRoute?.route_id || 'Delhi Local'
+  const routeName = selectedRoute?.name || selectedRoute?.route_long_name || `Route ${routeNumber}`
+
   return (
     <main className="page-shell">
       <div className="page-heading">
-        <p className="eyebrow">Bus Details</p>
-        <h1>Route details are coming soon</h1>
-        <p>This page will show a bus route, stops, and service information.</p>
+        <p className="eyebrow">Bus & Route Details</p>
+        <h1>{routeName}</h1>
+        <p>Live tracking details for Delhi Open Transit Data routes.</p>
       </div>
       <section className="details-panel">
-        <div className="detail-bus-mark">EB</div>
+        <div className="detail-bus-mark">DTC</div>
         <div>
-          <p className="eyebrow">Selected route</p>
-          <h2>Route 131</h2>
-          <p>Dhanmondi to Motijheel</p>
+          <p className="eyebrow">Selected Route</p>
+          <h2>Route {routeNumber}</h2>
+          <p>{routeName}</p>
         </div>
-        <div className="detail-row"><span>Current status</span><strong className="status-text">Ready for tracking</strong></div>
-        <div className="detail-row"><span>Next step</span><strong>Map and stop details</strong></div>
-        <Button variant="secondary" onClick={() => onNavigate('routes')}>Back to routes</Button>
+        <div className="detail-row"><span>Agency</span><strong>{selectedRoute?.agency_id || 'DIMTS / DTC'}</strong></div>
+        <div className="detail-row"><span>Status</span><strong className="status-text">Live GPS Stream Active</strong></div>
+        <Button onClick={() => onNavigate('tracking', selectedRoute)}>Track Buses On Map</Button>
+        <Button variant="secondary" onClick={() => onNavigate('routes')}>Browse All Routes</Button>
       </section>
     </main>
   )

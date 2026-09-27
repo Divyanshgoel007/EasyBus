@@ -1,66 +1,50 @@
+import { useState, useEffect } from 'react'
 import RouteCard from '../components/RouteCard'
 
-const routes = [
-  {
-    number: '131',
-    from: 'Delhi',
-    to: 'Rohini',
-    frequency: '10 min',
-    status: 'Active',
-    stops: ['Kashmere Gate', 'Shalimar Bagh', 'Pitampura', 'Rohini'],
-  },
-  {
-    number: '109',
-    from: 'Kashmere Gate',
-    to: 'Panipat',
-    frequency: '15 min',
-    status: 'Active',
-    stops: ['Kashmere Gate', 'Sonipat', 'Murthal', 'Panipat'],
-  },
-  {
-    number: '109A',
-    from: 'Delhi',
-    to: 'Murthal',
-    frequency: '20 min',
-    status: 'Active',
-    stops: ['Delhi', 'Narela', 'Sonipat', 'Murthal'],
-  },
-  {
-    number: '175',
-    from: 'Delhi',
-    to: 'Sonipat',
-    frequency: '15 min',
-    status: 'Active',
-    stops: ['ISBT Kashmere Gate', 'Narela', 'Kundli', 'Sonipat'],
-  },
-  {
-    number: '22',
-    from: 'Anand Vihar',
-    to: 'Noida',
-    frequency: '12 min',
-    status: 'Active',
-    stops: ['Anand Vihar', 'Mayur Vihar', 'Noida Sector 15', 'Noida'],
-  },
-  {
-    number: '7',
-    from: 'ISBT Kashmere Gate',
-    to: 'Gurugram',
-    frequency: '20 min',
-    status: 'Active',
-    stops: ['ISBT Kashmere Gate', 'Connaught Place', 'Delhi Cantt', 'Gurugram'],
-  },
-]
-
 function Routes({ onNavigate }) {
+  const [routes, setRoutes] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+
+  useEffect(() => {
+    fetch('http://localhost:5000/api/routes')
+      .then(res => {
+        if (!res.ok) throw new Error('Failed to fetch routes')
+        return res.json()
+      })
+      .then(data => {
+        setRoutes(data)
+        setLoading(false)
+      })
+      .catch(err => {
+        setError(err.message)
+        setLoading(false)
+      })
+  }, [])
   return (
     <main className="page-shell">
       <div className="page-heading">
-        <p className="eyebrow">The EasyBus network</p>
-        <h1>Browse all routes</h1>
-        <p>Choose a route to see its stops and available buses in a future update.</p>
+        <p className="eyebrow">The EasyBus Delhi Network</p>
+        <h1>Browse Delhi Routes</h1>
+        <p>Choose a route to preview the local bus tracking experience.</p>
       </div>
+
       <div className="route-grid route-grid-wide">
-        {routes.map((route) => <RouteCard key={route.number} route={route} onSelect={() => onNavigate('tracking', route)} />)}
+        {loading && <p>Loading routes...</p>}
+        {error && <p className="text-red-500">Error: {error}</p>}
+        {!loading && !error && routes.length === 0 && <p>No routes found.</p>}
+        {routes.map((route) => (
+          <RouteCard
+            key={route._id}
+            route={{
+              route_id: route._id,
+              route_short_name: route.name,
+              route_long_name: `Route ${route.name} (${route.stops?.length || 0} stops)`,
+              agency_id: 'TrackMate'
+            }}
+            onSelect={() => onNavigate('tracking', { number: route.name, ...route })}
+          />
+        ))}
       </div>
     </main>
   )
