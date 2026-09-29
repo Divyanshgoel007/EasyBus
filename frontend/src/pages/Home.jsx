@@ -2,26 +2,31 @@ import Button from '../components/Button'
 import RouteCard from '../components/RouteCard'
 import { useState, useEffect } from 'react'
 
-const demoRoutes = [
-  { route_id: '10', route_short_name: '10', route_long_name: 'Rohini Sector 15 to Kashmere Gate', agency_id: 'DTC' },
-  { route_id: '23', route_short_name: '23', route_long_name: 'Dwarka Sector 10 to Karol Bagh', agency_id: 'DTC' },
-  { route_id: '27', route_short_name: '27', route_long_name: 'Narela to Delhi Secretariat', agency_id: 'DIMTS' },
-  { route_id: '34', route_short_name: '34', route_long_name: 'Anand Vihar to Ghaziabad Border', agency_id: 'DTC' },
-  { route_id: '74', route_short_name: '74', route_long_name: 'Mundka to Connaught Place', agency_id: 'DIMTS' },
-  { route_id: '157', route_short_name: '157', route_long_name: 'Najafgarh to Uttam Nagar', agency_id: 'DTC' }
-]
-
 const stats = {
   totalActiveBuses: 18,
   totalActiveRoutes: 6
 }
 
 function Home({ onNavigate, user }) {
-  const popularRoutes = demoRoutes.slice(0, 6)
+  const [routes, setRoutes] = useState([])
   const [isRiding, setIsRiding] = useState(false)
   const [rideId, setRideId] = useState(null)
   const [locationWatcher, setLocationWatcher] = useState(null)
-  const [driverRoute, setDriverRoute] = useState('10')
+  const [driverRoute, setDriverRoute] = useState('')
+
+  useEffect(() => {
+    fetch('http://localhost:5000/api/routes')
+      .then(res => res.json())
+      .then(data => {
+        setRoutes(data)
+        if (data.length > 0 && !driverRoute) {
+          setDriverRoute(data[0].routeNumber)
+        }
+      })
+      .catch(console.error)
+  }, [])
+
+  const popularRoutes = routes.slice(0, 6)
 
   const handleStartRide = async () => {
     if (!navigator.geolocation) {
@@ -123,9 +128,9 @@ function Home({ onNavigate, user }) {
                   onChange={(e) => setDriverRoute(e.target.value)}
                   style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid #ccc' }}
                 >
-                  {demoRoutes.map(r => (
-                    <option key={r.route_id} value={r.route_id}>
-                      Route {r.route_short_name} - {r.route_long_name}
+                  {routes.map(r => (
+                    <option key={r._id} value={r.routeNumber}>
+                      Route {r.routeNumber} - {r.routeName}
                     </option>
                   ))}
                 </select>
@@ -152,9 +157,14 @@ function Home({ onNavigate, user }) {
         <div className="route-grid">
           {popularRoutes.map((route) => (
             <RouteCard
-              key={route.route_id}
-              route={route}
-              onSelect={() => onNavigate('tracking', { number: route.route_short_name || route.route_id, ...route })}
+              key={route._id}
+              route={{
+                route_id: route.routeId,
+                route_short_name: route.routeNumber,
+                route_long_name: `${route.routeName} (${route.totalStops} stops)`,
+                agency_id: 'TrackMate'
+              }}
+              onSelect={() => onNavigate('tracking', { number: route.routeNumber, ...route })}
             />
           ))}
         </div>

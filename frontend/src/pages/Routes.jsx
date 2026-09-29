@@ -37,12 +37,12 @@ function Routes({ onNavigate }) {
           <RouteCard
             key={route._id}
             route={{
-              route_id: route._id,
-              route_short_name: route.name,
-              route_long_name: `Route ${route.name} (${route.stops?.length || 0} stops)`,
+              route_id: route.routeId,
+              route_short_name: route.routeNumber,
+              route_long_name: `${route.routeName} (${route.totalStops} stops)`,
               agency_id: 'TrackMate'
             }}
-            onSelect={() => onNavigate('tracking', { number: route.name, ...route })}
+            onSelect={() => onNavigate('tracking', { number: route.routeNumber, ...route })}
           />
         ))}
       </div>

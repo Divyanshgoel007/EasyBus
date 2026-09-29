@@ -8,23 +8,13 @@ require('dotenv').config();
 const User = require('./models/User');
 const Ride = require('./models/Ride');
 
-const MOCK_ROUTES = {
-  '10': [
-    { name: 'Rohini Sector 15', lat: 28.7366, lng: 77.1328 },
-    { name: 'Pitampura', lat: 28.7031, lng: 77.1323 },
-    { name: 'Kashmere Gate', lat: 28.6665, lng: 77.2285 }
-  ],
-  '23': [
-    { name: 'Dwarka Sector 10', lat: 28.5808, lng: 77.0601 },
-    { name: 'Janakpuri', lat: 28.6219, lng: 77.0878 },
-    { name: 'Karol Bagh', lat: 28.6514, lng: 77.1908 }
-  ]
-};
+const Route = require('./models/Route');
 
-function calculateNextStop(routeId, lat, lng) {
-  const stops = MOCK_ROUTES[routeId];
-  if (!stops) return { nextStop: 'End of route', eta: 0 };
+async function calculateNextStop(routeId, lat, lng) {
+  const route = await Route.findOne({ routeNumber: String(routeId) }) || await Route.findOne({ routeId: String(routeId) });
+  if (!route || !route.stops || route.stops.length === 0) return { nextStop: 'End of route', eta: 0 };
 
+  const stops = route.stops;
   let closestStop = stops[0];
   let minDistance = Infinity;
   for (const stop of stops) {
@@ -64,6 +54,15 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/bustrack'
   .catch(err => console.error('Could not connect to MongoDB:', err));
 
 // Routes
+
+app.get('/api/routes', async (req, res) => {
+  try {
+    const routes = await Route.find();
+    res.json(routes);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 // 1. Simple Login (No JWT for basic coding, just matching username/password)
 app.post('/api/login', async (req, res) => {
@@ -114,7 +113,7 @@ app.post('/api/ride/start', authenticateToken, async (req, res) => {
     // Deactivate any existing active rides for this driver
     await Ride.updateMany({ driverId, isActive: true }, { isActive: false });
 
-    const { nextStop, eta } = calculateNextStop(routeId, lat, lng);
+    const { nextStop, eta } = await calculateNextStop(routeId, lat, lng);
 
     const ride = new Ride({
       driverId,
@@ -138,7 +137,7 @@ app.post('/api/ride/update-location', authenticateToken, async (req, res) => {
     const existingRide = await Ride.findById(rideId);
     if (!existingRide) return res.status(404).json({ message: 'Ride not found' });
 
-    const { nextStop, eta } = calculateNextStop(existingRide.routeId, lat, lng);
+    const { nextStop, eta } = await calculateNextStop(existingRide.routeId, lat, lng);
 
     const ride = await Ride.findByIdAndUpdate(
       rideId,
